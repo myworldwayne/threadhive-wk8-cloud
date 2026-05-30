@@ -1,8 +1,10 @@
 import { Container, Card, Form, Button, Spinner } from "react-bootstrap";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { login } from "../../services/authService";
-import { useAuth } from "../../context/AuthContext";
+import { loginUser } from "../../store/slices/authSlice";
 import "./Auth.css";
 
 function Login() {
@@ -12,7 +14,7 @@ function Login() {
   const [info, setInfo] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { loginUser } = useAuth();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Check if user was redirected due to expired token
@@ -33,7 +35,7 @@ function Login() {
     try {
       const data = await login(form);
 
-      loginUser(data);
+      dispatch(loginUser(data));
 
       // Navigate to home
       alert("Login successful!");
